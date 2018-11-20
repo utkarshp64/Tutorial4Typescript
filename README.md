@@ -1,13 +1,34 @@
-
 # Tutorial4Typescript
-## Variable Declaration
+
+* [Variable Declaration](#variable-declaration)
+* [Basic Datatypes](#basic-datatypes)
+  * [Type assertions](#type-assertions)
+  * [Variable Scope in typeScript](#variable-scope-in-typescript)
+* [Operator In Typescript](#operator-in-typescript)
+* [Conditional Statement and Loops](#conditional-statement-and-loops)
+* [Functions in Typescript](#functions-in-typescript)
+  * [Function Parameters](#function-parameters)
+* [Classes](#classes)
+  * [Inheritance](#inheritance)
+  * [Abstract Class](#abstract-class)
+  * [Access Modifiers](#access-modifiers)
+  * [Accessors](#accessors)
+* [Interfaces](#interfaces)
+* [Generics](#generics)
+* [Modules](#modules)
+* [Namespaces](#namespaces)
+* [Javascript Objects Basics](#javascript-objects-basics)
+
+---
+ ## Variable Declaration
+
 * In typescript variable are decleared using `let` and `const` keyword.
 * `const` is an augmentation of `let` in that it prevents re-assignment to a variable.
 * **`const` declarations must be initialized**
 * When a variable is declared using `let`, it uses what some call block-scoping.
 * `var` declarations are accessible anywhere within their containing function, module, namespace, or global scope
 
-```typescript=
+```typescript
 let x = 10;
 let x = 20;// error: can't re-declare 'x' in the same scope
 const pi = 3.14;
@@ -15,48 +36,49 @@ const pi = 3.14;
 
 ## Basic Datatypes
 > syntax
-```typescript=
+```typescript
 let <variableName>: <dataType> = value;
 //<dataType> :  boolean | number | string | null | undefined | any | void
 ```
+
 ##### Examples:
 1. Boolean
-```typescript=
+```typescript
 let isDone: boolean = false;
 ```
 2. Number
-```typescript=
+```typescript
 let decimal: number = 6;
 let hex: number = 0xf00d;
 let binary: number = 0b1010;
 let octal: number = 0o744;
 ```
 3. String
-```typescript=
+```typescript
 let color: string = "blue";
 let fullName: string = 'Bob Bobbington';
 let sentence: string = `Hello, my name is ${ fullName }.
                         I'll be ${ age + 1 } years old next month.`
 ```
 4. Null & Undefined
-```typescript= 
-let u: undefined = undefined;//*(Something hasn't been initialized : undefined.)*
-let n: null = null;//*(Something is currently unavailable: null.)*
+```typescript 
+let u: undefined = undefined;//(Something hasn't been initialized : undefined.)
+let n: null = null;//(Something is currently unavailable: null.)
 ```
 > By default `null` and `undefined` are subtypes of all other types. That means you can assign null and undefined to something like `number`
 5. Any
-```typescript=
+```typescript
 let notSure: any = 4;
 notSure = "maybe a string instead";
 notSure = false;
 ```
 > The any type is a powerful way to work with existing JavaScript, allowing you to gradually opt-in and opt-out of type-checking during compilation.
 6. Void
-Declaring variables of type void is not useful because you can only assign `undefined` or `null` to them:
-```typescript=
+    Declaring variables of type void is not useful because you can only assign `undefined` or `null` to them:
+```typescript
 let unusable: void = undefined;
 ```
-```typescript=
+```typescript
 function warnUser(): void {
     alert("This is my warning message");
 }
@@ -64,9 +86,9 @@ function warnUser(): void {
 7. Never
 > The `never` type represents the type of values that never occur. For instance, `never` is the return type for a function expression or an arrow function expression that always throws an exception or one that never returns; Variables also acquire the type never when narrowed by any type guards that can never be true.
 8. Union
-Union types are used to declare a variable that is able to store a value of two or more
-types.
-```typescript=
+    Union types are used to declare a variable that is able to store a value of two or more
+    types.
+```typescript
 let path : string[]|string|boolean;
 path = '/temp/log.xml';
 path = ['/temp/log.xml', '/temp/errors.xml'];
@@ -77,16 +99,16 @@ path = true
 ---
 
 * Array
-TypeScript, like JavaScript, allows you to work with arrays of values. Array types can be written in one of two ways. In the first, you use the type of the elements followed by `[]` to denote an array of that element type
+	* TypeScript, allows you to work with arrays of values, like JavaScript. Array types can be written in one of two ways. In the first, you use the type of the elements followed by `[]` to denote an array of that element type
 ##### Example:
-```typescript=
+```typescript
 //type 1
 let list: number[] = [1, 2, 3];
 
 //type 2
 let list: Array<number> = [1, 2, 3];
 ```
-```typescript=
+```typescript
 let num: number[][] = [[1,2,3],[1,2,3],[0,0,0]];
 console.log(num)
 //[Array[3], Array[3], Array[3]]
@@ -106,8 +128,9 @@ console.log(num)
 * Tuples
     * Tuple types allow you to express an array where the type of a fixed number of elements is known, but need not be the same.
     * The Tuple type represents a JavaScript array where you can define the datatype of each element in array.
+
 ##### Example:
-```typescript=
+```typescript
 // Declare a tuple type
 let x: [string, number];
 // Initialize it
@@ -115,7 +138,7 @@ x = ["hello", 10]; // OK
 // Initialize it incorrectly
 x = [10, "hello"]; // Error
 ```
-```typescript=
+```typescript
 let tupleArray: [string, number, number];
 
 tupleArray = ['add', 2, 3]; // GOOD!
@@ -138,26 +161,28 @@ tupleMix = ['add', 2,3,true,false,2,'string',false];//Good
     * TypeScript enums are number based
     * The `enum` keyword is used to define Enum type in TypeScript.
     * By default, the value of enum’s members start from 0.
+
 ##### Example:
-```typescript=
+```typescript
 enum Color {Red, Green, Blue}
 let c: Color = Color.Green;
 console.log(c) // 1
 ```
-```typescript=
+```typescript
 enum Color {Red=2, Green=4, Blue}
 let c: Color = Color.Green;
 console.log(c) // 4
 ```
-```typescript=
+```typescript
 enum Tristate { False, True, Unknown }
 console.log(Tristate[0]); // "False"
 console.log(Tristate["False"]); // 0
 console.log(Tristate)//{0: "False", 1: "True", 2: "Unknown"}
 console.log(Tristate['Unknown'])//2
 ```
+
 ##### Example: Advanced `enum`
-```typescript=
+```typescript
 // Example of enum with string-valued members
 enum StringEnum {
     JSON = "application/json",
@@ -180,13 +205,13 @@ console.log(DefaultPorts['HTTPS'])//443
 ### Type assertions
 Type assertions is type casting in Typescript.Type assertions have two forms:
 1. “angle-bracket” syntax:
-```typescript=
+```typescript
 let someValue: any = "this is a string";
 let strLength: number = (<string>someValue).length;
 ```
 
 2. as-syntax:
-```typescript=
+```typescript
 let someValue: any = "this is a string";
 let strLength: number = (someValue as string).length
 ```
@@ -197,8 +222,9 @@ let strLength: number = (someValue as string).length
 * Class Scope − These variables are also called fields. Fields or class variables are declared within the class but outside the methods. These variables can be accessed using the object of the class. Fields can also be static. Static fields can be accessed using the class name.
 
 * Local Scope − Local variables, as the name suggests, are declared within the constructs like methods, loops etc. Local variables are accessible only within the construct where they are declared.
+
 ##### Example:
-```typescript=
+```typescript
 let global_num = 12          //global variable 
 class Numbers { 
    num_val = 13;             //class variable 
@@ -215,24 +241,24 @@ console.log("Class num: "+obj.num_val)
 ```
 ## Operator In Typescript
 * Arithmetic operators
-`[+, -, /, *, %, ++, --]`
+  `[+, -, /, *, %, ++, --]`
 * Relational operators
-`[<, >, <=, >=, ==, !=]`
+  `[<, >, <=, >=, ==, !=]`
 * Logical operators
-`[&& (AND), || (OR), ! (NOT)]`
+  `[&& (AND), || (OR), ! (NOT)]`
 * Bitwise operators
-`[& (Bitwise AND), | (BitWise OR), ^ (Bitwise XOR), ~ (Bitwise Not), << (Left Shift), >> (Right Shift), >>> (Right shift with Zero)]`
+  `[& (Bitwise AND), | (BitWise OR), ^ (Bitwise XOR), ~ (Bitwise Not), << (Left Shift), >> (Right Shift), >>> (Right shift with Zero)]`
 * Assignment operators
-`[+=, -=, *=, /=, %=]`
+  `[+=, -=, *=, /=, %=]`
 * Ternary/conditional operator
-`[condition ? statement1 : statement2]`
+  `[condition ? statement1 : statement2]`
 * Type Operator
-`[typeof, instanceof]`
+  `[typeof, instanceof]`
 
 ## Conditional Statement and Loops
 * **If-else and nested if statement** 
 > syntax
-```typescript=
+```typescript
 if (condition) {
   code to run if condition is true
 } else if {
@@ -242,7 +268,7 @@ if (condition) {
 }
 ```
 ##### Example:
-```typescript=
+```typescript
 let num:number = 2 
 if(num > 0) { 
    console.log(num+" is positive") 
@@ -254,7 +280,7 @@ if(num > 0) {
 ```
 * **Switch statement**
 > syntax
-```typescript=
+```typescript
 switch (expression) {
   case choice1: run this code
                 break;
@@ -267,7 +293,7 @@ switch (expression) {
 }
 ```
 ##### Example:
-```typescript=
+```typescript
 let grade:string = "A"; 
 switch(grade) { 
    case "A": { 
@@ -286,7 +312,7 @@ switch(grade) {
 ```
 * **While statement**
 > syntax
-```typescript=
+```typescript
 initializer
 while (exit-condition) {
   // code to run
@@ -295,7 +321,7 @@ while (exit-condition) {
 }
 ```
 ##### Example:
-```typescript=
+```typescript
 let n: number = 5
 while (n != 0) {
     console.log("Entered while");
@@ -304,7 +330,7 @@ while (n != 0) {
 ```
 * **Do-while statement**
 > syntax
-```typescript=
+```typescript
 initializer
 do {
   // code to run
@@ -314,7 +340,7 @@ do {
 
 ```
 ##### Example:
-```typescript=
+```typescript
 let n: number = 5
 while (n != 0) {
     console.log("Entered while");
@@ -327,13 +353,14 @@ do {
 ```
 * **For statement**
 > syntax
-```typescript=
+```typescript
 for (initializer; exit-condition; final-expression) {
   // code to run
 }
 ```
+
 ##### Example:
-```typescript=
+```typescript
 let num:number = 5; 
 let factorial = 1; 
 
@@ -344,13 +371,14 @@ console.log(factorial)
 ```
 * **For-in statement**
 > syntax
-```typescript=
+```typescript
 for (let val in list) { 
    //statements 
 }
 ```
+
 ##### Example:
-```typescript=
+```typescript
 let someArray = [9, 2, 5];
 for (let item in someArray) {
   console.log(item); // 0,1,2
@@ -360,13 +388,14 @@ for (let item in someArray) {
 
 * **For-of statement**
 >synatx
-```typescript=
+```typescript
 for (let val of list) { 
    //statements 
 }
 ```
+
 ##### Example:
-```typescript=
+```typescript
 //using for-of
 let someArray = [9, 2, 5];
 for (let item of someArray) {
@@ -374,7 +403,7 @@ for (let item of someArray) {
 }
 ```
 ##### Example:
-```typescript=
+```typescript
 let i:any; 
 let alphabetList:any = "a b c d e f g h"  
 //using for-of
@@ -400,37 +429,40 @@ for(i of alphabetList) {
 > The `break` statement is used to take the control out of a block. Using `break` in a loop causes the program to exit the loop.
 
 > The `continue` statement skips the subsequent statements in the current iteration and takes the control back to the beginning of the loop. Unlike the `break` statement, the `continue` doesn’t exit the loop. It terminates the current iteration and starts the subsequent iteration.
- 
+
 > syntax
-```typescript=
+```typescript
 break;
 continue;
 ```
+
 ## Functions in Typescript
 **1. Named function(Function Declaration)**
 > syntax
-```typescript=
+```typescript
 function  function_name() { 
    // function body 
 }
 ```
+
 ##### Example:
-```typescript=
+```typescript
 function add(x: number,y: number) {
     return x + y;
 }
 ```
 **2. Anonymous function(Function Expression)**
 > syntax
-```typescript=
+```typescript
 let val = function( [arguments] ) { ... }
 ```
+
 ##### Example:
-```typescript=
+```typescript
 let myAdd = function(x:number, y:number): number { return x + y; };
 ```
 ##### Example: `greetNamed` is a function declaration while `greetUnnamed` is a function expression
-```typescript=
+```typescript
 console.log(greetNamed("John"));
 console.log(greetUnnamed("John"));
 function greetNamed(name : string) : string {
@@ -447,17 +479,18 @@ let greetUnnamed = function(name : string) : string {
 
 **3. Arrow function / Fat arrow(=>) function**
 > syntax
-```typescript=
+```typescript
 let val = ( [arguments] ) => { ... }
 ```
+
 ##### Example:
-```typescript=
+```typescript
 let add = ( a, b) => a + b;
 console.log(add(2,3));//5
 ```
----
+
 ##### Example: function Multiple return values and multiline Arrow function 
-```typescript=
+```typescript
 let deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
@@ -478,11 +511,12 @@ let pickedCard = cardPicker();
 
 console.log("card: " + pickedCard.card + " of " + pickedCard.suit);
 ```
----
+
 ### Function Parameters
 * **Optional Parameters**
+
 ##### Example:
-```typescript=
+```typescript
 function buildName(firstName: string, lastName?: string) {
     if (lastName)
         return console.log(firstName + " " + lastName);
@@ -495,7 +529,7 @@ let result3 = buildName("David", "Webb");       // ah, just right
 ```
 * **Default Parameters**
 ##### Example:
-```typescript=
+```typescript
 function calculate_discount(price:number,rate:number = 0.50) { 
    let discount = price * rate; 
    console.log("Discount Amount: ",discount); 
@@ -506,13 +540,13 @@ calculate_discount(1000,0.30) //300
 ```
 * **Rest Parameters**
 ##### Example:
-```typescript=
+```typescript
 function buildName(firstName: string, ...restOfName: string[]) {
     return console.log(firstName + " " + restOfName.join(" "));
 }
 let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 ```
-```typescript=
+```typescript
 function buildName(firstName: string, ...restOfName: any[]) {
   return console.log(firstName + " " + restOfName.join(" ")); //Joseph Samuel,Lucas MacKinzie,David
   //return console.log(firstName + " " + restOfName[0]); //Joseph Samuel,Lucas
@@ -525,7 +559,7 @@ let employeeName = buildName("Joseph", ["Samuel", "Lucas"], ["MacKinzie", "David
 //let employeeName = buildName("Joseph", ["Samuel", "Lucas",["MacKinzie", "David"]]);
 ```
 ##### Example:
-```typescript=
+```typescript
 function add(...foo : number[]) : number {
  let result = 0;
  for(let i = 0; i < foo.length; i++){
@@ -541,7 +575,7 @@ add(2,2,2); // returns 6
 ## Classes
 A class is composed of a fields, Constructors, and methods / functions.
 > syntax
-```typescript=
+```typescript
 class class_name { 
    //field
    //constructor
@@ -549,7 +583,7 @@ class class_name {
 }
 ```
 ##### Example:
-```typescript=
+```typescript
 class Greeter {
     //fields
     greeting: string;
@@ -591,7 +625,7 @@ let person = new Person('David','Webb');
 console.log(person.name);
 person.greet();
 ```
-```typescript=
+```typescript
 // shortcut syntax
 class Person {
   constructor(public name: string, public surname: string, public email?: string) { }
@@ -611,7 +645,7 @@ person.greet();
 * It is the mechanism in Typescript by which one class is allow to inherit the features(fields and methods) of another class using `extends` keyword
 
 ##### Example:
-```typescript=
+```typescript
 class Animal {
     move(distanceInMeters: number = 0) {
         console.log(`Animal moved ${distanceInMeters}m.`);
@@ -641,7 +675,7 @@ cat.meow();
 ```
 ### Abstract Class
 An Abstract class is a special type of class which cannot be instantiated and acts as a base class for other classes. Abstract class members marked as abstract must be implemented by derived classes.
-```typescript=
+```typescript
 abstract class Shapes {
   abstract Area(): number;
 }
@@ -670,7 +704,7 @@ let r = new Rectangle(4, 3);
 console.log(r.Area()); //12
 ```
 ##### Example: Abstraction, Inheritance, Method overriding
-```typescript=
+```typescript
 abstract class Animal {
   abstract move();
   eat() {
@@ -720,23 +754,23 @@ cat.move();
 ```
 ### Access modifiers
 * `public`
-A public data member has universal accessibility. Data members in a class are public by default
+  A public data member has universal accessibility. Data members in a class are public by default
 * `private`
-Private data members are accessible only within the class that defines these members
+  Private data members are accessible only within the class that defines these members
 * `protected`
-A protected data member is accessible by the members within the same class as well as child class
+  A protected data member is accessible by the members within the same class as well as child class
 
-| accessible on   | `public` | `protected` | `private`  |
-| --------------- | -------- | ----------- | ---------- |
-| class           | yes      | yes         | yes        |
-| class children  | yes      | yes         | no         |
-| class instances | yes      | no          | no         |
+| accessible on   | `public` | `protected` | `private` |
+| --------------- | -------- | ----------- | --------- |
+| class           | yes      | yes         | yes       |
+| class children  | yes      | yes         | no        |
+| class instances | yes      | no          | no        |
 
 * **`readonly`**
     * TypeScript supports readonly modifiers on property level by using the `readonly` keyword. The Readonly properties must be initialized at their declaration or in the constructor.
     * The **readonly modifier** is part of TypeScript's type system. **It's only used by the compiler to check for illegal property assignments.** Once the TypeScript code has been compiled to JavaScript, all notions of readonly are gone.
 ##### Example:
-```typescript=
+```typescript
 class Person {
   //fields or property with access modifiers
   public firstName: string;
@@ -760,7 +794,7 @@ class Person {
 ### Accessors
 TypeScript supports **getters/setters** as a way of intercepting accesses to a member of an object.
 ##### Example:
-```typescript=
+```typescript
 class Employee {
   private _fullName: string; // naming convention for private variable
 // getter method
@@ -780,14 +814,14 @@ console.log(employee.fullName);
 * Interfaces define properties, methods, and events, which are the members of the interface. Interfaces contain only the declaration of the members.
 * Interfaces are particularly useful for validating the required structure of properties, objects passed as parameters, and objects returned from functions.
 > syntax
-```typescript=
+```typescript
 interface finterface_name{
     //fields or properties
     //methods (only declaration part)
 }
 ```
 ##### Example:
-```typescript=
+```typescript
 interface Person { 
    firstName:string, 
    lastName:string,
@@ -814,7 +848,7 @@ console.log(employee.firstName) console.log(employee.lastName)
 ```
 
 ##### Example: An interface can extend multiple interfaces, creating a combination of all of the interfaces.
-```typescript=
+```typescript
 interface Shape {
   color: string;
 }
@@ -834,7 +868,7 @@ square.penWidth = 5.0;
 ```
 
 ##### Example: A class can use Interfaces using keyword `implements`
-```typescript=
+```typescript
 interface IStore {
   Read(): void;
   Write(): void;
@@ -888,7 +922,7 @@ I3.Decompress();
 * In generics, a type parameter is supplied between the open (<) and close (>) brackets
 ##### Example:
 * Part 1
-```typescript=
+```typescript
 //In Queue class we want to add only say number type but above code
 //will accept string also. so we will modify code for number in part 2
 class Queue {
@@ -911,7 +945,7 @@ queue.push("Hi"); // Oops a mistake
 console.log(queue.data);
 ```
 * Part 2
-```typescript=
+```typescript
 class Queue {
   private _data = [];
   push = (item: number) => this._data.push(item); //Arrow function
@@ -932,7 +966,7 @@ queue.push("Hi"); //  ERROR : cannot push a string.
 console.log(queue.data);
 ```
 * Part 3
-```typescript=
+```typescript
 //Lets modify our code for any data type i.e. using generics
 /** A class definition with a generic parameter */
 class Queue<T> {
@@ -958,7 +992,7 @@ console.log(queueString.data);
 * A module is a container to a group of related variables, functions, classes, and interfaces etc.
 * Module file will contain `export` keyword and the file where you want use functionality provided by module, will contains `import` keyword
 ##### Example:
-```typescript=
+```typescript
 //calculator.ts
 //exporting calculator class 
 export class Calculator {
@@ -983,7 +1017,7 @@ console.log(cal.substraction());
 ## Namespaces
 Namespaces are used for grouping of variables, functions, objects, classes, and interfaces, so that you can avoid the naming collisions. Namespaces are declared using the `namespace` keyword.
 ##### Example:
-```typescript=
+```typescript
 // namespace named collegeDatabase
 namespace collegeDatabase {
   export class Student {
@@ -1021,7 +1055,7 @@ namespace universityDatabase {
 * It consists of several variables and functions - which are called "properties" and "methods' when they are inside objects.
 
 ##### Example
-```typescript=
+```typescript
 var Person = {
   name: ['Bob', 'Smith'],
   birth: {
@@ -1076,7 +1110,7 @@ console.log(Person.height);    //1.75m
 * **The `this` keyword refers to the current object, the code is being written inside** 
 
 ##### Example: Object creation using constructor function
-```typescript=
+```typescript
 //object creation using constructor function
 function Person(first, last, age, gender, interests) {
   this.name = {
